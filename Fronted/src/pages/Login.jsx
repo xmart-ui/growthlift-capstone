@@ -1,66 +1,97 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Card from "../components/ui/Card";
+import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
+import api from "../services/api";
 
-const categoryColors = {
-  Food: "bg-orange-100 text-orange-700",
-  Transport: "bg-blue-100 text-blue-700",
-  Shopping: "bg-purple-100 text-purple-700",
-  Bills: "bg-rose-100 text-rose-700",
-  Other: "bg-slate-100 text-slate-700",
-};
+export default function Login() {
+  const navigate = useNavigate();
 
-export default function TransactionTable({ transactions = [], onAddClick }) {
-  if (transactions.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 px-6 py-16 text-center">
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-50 text-3xl">
-          📭
-        </div>
-        <h3 className="font-heading text-lg font-semibold text-slate-900">
-          No expenses yet
-        </h3>
-        <p className="mt-2 max-w-sm text-sm text-slate-500">
-          Start tracking your spending by adding your first expense. Your transactions will appear here.
-        </p>
-        <Button className="mt-6" onClick={onAddClick}>
-          + Add Your First Expense
-        </Button>
-      </div>
-    );
-  }
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await api.post("/auth/login", form);
+
+    
+      localStorage.setItem("token", res.data.token);
+
+    
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+
+
+      navigate("/dashboard");
+
+    } catch (error) {
+      alert(
+        error.response?.data?.message || "Login Failed"
+      );
+    }
+  };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[640px] text-left text-sm">
-        <thead>
-          <tr className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-500">
-            <th className="pb-3 pr-4 font-medium">Title</th>
-            <th className="pb-3 pr-4 font-medium">Category</th>
-            <th className="pb-3 pr-4 font-medium">Amount</th>
-            <th className="pb-3 font-medium">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {transactions.map((tx) => (
-            <tr
-              key={tx.id}
-              className="border-b border-slate-50 transition-colors hover:bg-slate-50/80"
-            >
-              <td className="py-4 pr-4 font-medium text-slate-900">{tx.title}</td>
-              <td className="py-4 pr-4">
-                <span
-                  className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${categoryColors[tx.category] || categoryColors.Other}`}
-                >
-                  {tx.category}
-                </span>
-              </td>
-              <td className="py-4 pr-4 font-semibold text-rose-600">
-                - Rs. {tx.amount.toLocaleString()}
-              </td>
-              <td className="py-4 text-slate-500">{tx.date}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="flex min-h-screen items-center justify-center bg-slate-100 p-4">
+      <Card className="w-full max-w-md p-8">
+
+        <h1 className="mb-2 text-center text-3xl font-bold">
+          Welcome Back
+        </h1>
+
+        <p className="mb-6 text-center text-slate-500">
+          Login to your Expense Tracker
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+
+          <Input
+            label="Email"
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Enter your email"
+          />
+
+          <Input
+            label="Password"
+            type="password"
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            placeholder="Enter your password"
+          />
+
+          <Button className="w-full">
+            Login
+          </Button>
+
+        </form>
+
+        <p className="mt-6 text-center text-sm">
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            className="text-blue-600 hover:underline"
+          >
+            Register
+          </Link>
+        </p>
+
+      </Card>
     </div>
   );
 }

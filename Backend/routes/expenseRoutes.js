@@ -1,22 +1,16 @@
 const express = require("express");
-
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ todo: true });
-});
+const {
+  getExpenses,
+  addExpense,
+  updateExpense,
+  deleteExpense,
+} = require("../controllers/expenseController");
 
-router.post("/", (req, res) => {
-  res.json({ todo: true });
-});
-
-router.put("/:id", (req, res) => {
-  res.json({ todo: true });
-});
-
-
-router.delete("/:id", (req, res) => {
-  res.json({ todo: true });
-});
+router.get("/", getExpenses);
+router.post("/", addExpense);
+router.put("/:id", updateExpense);
+router.delete("/:id", deleteExpense);
 
 module.exports = router;

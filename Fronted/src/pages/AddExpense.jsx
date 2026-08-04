@@ -1,18 +1,23 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Card from "../components/ui/Card";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
+import api from "../services/api";
 
 export default function AddExpense() {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [expense, setExpense] = useState({
+const [expense, setExpense] = useState(
+  location.state || {
     title: "",
     category: "Food",
     amount: "",
     date: "",
-  });
+    description: "",
+  }
+);
 
   const handleChange = (e) => {
     setExpense({
@@ -21,13 +26,24 @@ export default function AddExpense() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    console.log(expense);
+  try {
+    if (expense._id) {
+
+      await api.put(`/expenses/${expense._id}`, expense);
+    } else {
+ 
+      await api.post("/expenses", expense);
+    }
 
     navigate("/dashboard");
-  };
+
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   return (
     <Card className="mx-auto max-w-xl p-6">

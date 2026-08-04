@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Card from "../components/ui/Card";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
+import api from "../services/api";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -20,13 +21,23 @@ export default function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    console.log(form);
+  try {
+    const res = await api.post("/auth/register", form);
+
 
     navigate("/login");
-  };
+
+  } catch (error) {
+
+    alert(
+      error.response?.data?.message || "Registration Failed"
+    );
+
+  }
+};
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-100 p-4">

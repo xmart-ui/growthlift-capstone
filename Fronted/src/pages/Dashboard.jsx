@@ -1,25 +1,82 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import TransactionTable from "../components/TransactionTable";
+import api from "../services/api";
 
-const summaryCards = [
-  { label: "Total Balance", value: "Rs. 12,450", color: "text-slate-900", icon: "💰" },
-  { label: "Total Income", value: "Rs. 25,000", color: "text-emerald-600", icon: "📈" },
-  { label: "Total Expenses", value: "Rs. 12,550", color: "text-rose-600", icon: "📉" },
-];
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
-  const transactions = []; // wire to API later
+const [search, setSearch] = useState("");
+const [category, setCategory] = useState("all");
+const [transactions, setTransactions] = useState([]);
+
+
+const fetchExpenses = async () => {
+  try {
+    const res = await api.get("/expenses");
+    setTransactions(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const editExpense = (expense) => {
+  navigate("/add-expense", {
+    state: expense,
+  });
+};
+
+useEffect(() => {
+  fetchExpenses();
+}, []);
+
+const deleteExpense = async (id) => {
+  try {
+    await api.delete(`/expenses/${id}`);
+    fetchExpenses();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const totalExpenses = transactions.reduce(
+  (total, item) => total + Number(item.amount),
+  0
+);
+
+const summaryCards = [
+  {
+    label: "Total Expenses",
+    value: `Rs. ${totalExpenses}`,
+    color: "text-red-600",
+    icon: "💸",
+  },
+  {
+    label: "Total Entries",
+    value: transactions.length,
+    color: "text-blue-600",
+    icon: "📊",
+  },
+];
+
+const filteredTransactions = transactions.filter((tx) => {
+  const matchesSearch = tx.title
+    .toLowerCase()
+    .includes(search.toLowerCase());
+
+  const matchesCategory =
+    category === "all" || tx.category === category;
+
+  return matchesSearch && matchesCategory;
+});
 
   return (
+    
     <div className="space-y-8">
-      {/* Hero */}
+
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand-600 to-brand-700 p-6 text-white shadow-lg lg:p-10">
         <div className="relative z-10 max-w-2xl">
           <p className="text-sm font-medium text-brand-100">Welcome back 👋</p>
@@ -40,7 +97,7 @@ export default function Dashboard() {
         <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10" />
       </section>
 
-      {/* Summary cards */}
+    
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {summaryCards.map((card) => (
           <Card key={card.label} hover>
@@ -57,7 +114,7 @@ export default function Dashboard() {
         ))}
       </section>
 
-      {/* Transactions */}
+     
       <Card>
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <h2 className="font-heading text-xl font-semibold text-slate-900">
@@ -86,8 +143,10 @@ export default function Dashboard() {
         </div>
 
         <TransactionTable
-          transactions={transactions}
+          transactions={filteredTransactions}
           onAddClick={() => navigate("/add-expense")}
+          onDelete={deleteExpense}
+          onEdit={editExpense}
         />
       </Card>
     </div>
