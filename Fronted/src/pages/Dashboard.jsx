@@ -75,7 +75,7 @@ const filteredTransactions = transactions.filter((tx) => {
 
   return (
     
-    <div className="space-y-8">
+    <main className="space-y-8">
 
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand-600 to-brand-700 p-6 text-white shadow-lg lg:p-10">
         <div className="relative z-10 max-w-2xl">
@@ -149,6 +149,6 @@ const filteredTransactions = transactions.filter((tx) => {
           onEdit={editExpense}
         />
       </Card>
-    </div>
+    </main>
   );
 }

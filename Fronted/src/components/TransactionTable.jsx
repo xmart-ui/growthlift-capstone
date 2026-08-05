@@ -16,7 +16,7 @@ export default function TransactionTable({
 }) {
   if (transactions.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 px-6 py-16 text-center">
+      <main className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 px-6 py-16 text-center">
         <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-50 text-3xl">
           📭
         </div>
@@ -32,12 +32,12 @@ export default function TransactionTable({
         <Button className="mt-6" onClick={onAddClick}>
           + Add Your First Expense
         </Button>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="overflow-x-auto">
+    <main className="overflow-x-auto">
       <table className="w-full min-w-[700px] text-left text-sm">
         <thead>
           <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500">
@@ -98,6 +98,6 @@ export default function TransactionTable({
           ))}
         </tbody>
       </table>
-    </div>
+    </main>
   );
 }

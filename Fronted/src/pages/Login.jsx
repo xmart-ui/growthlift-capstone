@@ -44,7 +44,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-100 p-4">
+    <main className="flex min-h-screen items-center justify-center bg-slate-100 p-4">
       <Card className="w-full max-w-md p-8">
 
         <h1 className="mb-2 text-center text-3xl font-bold">
@@ -92,6 +92,6 @@ export default function Login() {
         </p>
 
       </Card>
-    </div>
+    </main>
   );
 }

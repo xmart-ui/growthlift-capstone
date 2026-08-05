@@ -40,7 +40,7 @@ const handleSubmit = async (e) => {
 };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-100 p-4">
+    <main className="flex min-h-screen items-center justify-center bg-slate-100 p-4">
       <Card className="w-full max-w-md p-8">
         <h1 className="mb-2 text-center text-3xl font-bold">
           Create Account
@@ -84,11 +84,14 @@ const handleSubmit = async (e) => {
 
         <p className="mt-6 text-center text-sm">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-600">
+          <Link 
+            to="/login" 
+            className="text-blue-600"
+            >
             Login
           </Link>
         </p>
       </Card>
-    </div>
+    </main>
   );
 }
