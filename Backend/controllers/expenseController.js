@@ -3,7 +3,9 @@ const Expense = require("../models/Expense");
 
 const getExpenses = async (req, res) => {
   try {
-    const expenses = await Expense.find().sort({ createdAt: -1 });
+    const expenses = await Expense.find({
+    userId: req.user.id,
+    }).sort({ createdAt: -1 });
 
     res.json(expenses);
   } catch (error) {
@@ -18,13 +20,14 @@ const addExpense = async (req, res) => {
   try {
     const { title, amount, category, date, description } = req.body;
 
-    const expense = await Expense.create({
-      title,
-      amount,
-      category,
-      date,
-      description,
-    });
+      const expense = await Expense.create({
+        userId: req.user.id,
+        title,
+        amount,
+        category,
+        date,
+        description,
+      });
 
     res.status(201).json(expense);
   } catch (error) {
@@ -37,11 +40,14 @@ const addExpense = async (req, res) => {
 
 const updateExpense = async (req, res) => {
   try {
-    const expense = await Expense.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+  const expense = await Expense.findOneAndUpdate(
+  {
+    _id: req.params.id,
+    userId: req.user.id,
+  },
+  req.body,
+  { new: true }
+);
 
     res.json(expense);
   } catch (error) {
@@ -54,7 +60,10 @@ const updateExpense = async (req, res) => {
 
 const deleteExpense = async (req, res) => {
   try {
-    await Expense.findByIdAndDelete(req.params.id);
+    await Expense.findOneAndDelete({
+    _id: req.params.id,
+    userId: req.user.id,
+    });
 
     res.json({
       message: "Expense deleted successfully",

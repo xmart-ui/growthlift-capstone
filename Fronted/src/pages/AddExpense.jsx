@@ -41,7 +41,7 @@ const handleSubmit = async (e) => {
     navigate("/dashboard");
 
   } catch (error) {
-    console.log(error);
+   
   }
 };
 

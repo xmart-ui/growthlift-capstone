@@ -19,7 +19,7 @@ const fetchExpenses = async () => {
     const res = await api.get("/expenses");
     setTransactions(res.data);
   } catch (error) {
-    console.log(error);
+   
   }
 };
 
@@ -38,7 +38,7 @@ const deleteExpense = async (id) => {
     await api.delete(`/expenses/${id}`);
     fetchExpenses();
   } catch (error) {
-    console.log(error);
+    
   }
 };
 
