@@ -21,11 +21,10 @@ export default function Navbar({ onMenuClick }) {
 
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
-    window.location.href = "/login";
-  };
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "/login";
+};
 
 
   return (
