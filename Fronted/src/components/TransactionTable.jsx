@@ -47,10 +47,8 @@ export default function TransactionTable({
   }
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900">
-
-      <table className="min-w-full text-left">
-
+    <div className="w-full overflow-x-auto">
+      <table className="w-full text-sm">
         <thead>
 
           <tr className="border-b border-slate-200 bg-slate-100 text-xs uppercase tracking-wider text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">

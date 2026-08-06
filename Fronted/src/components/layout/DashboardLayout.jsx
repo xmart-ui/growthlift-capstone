@@ -8,7 +8,7 @@ export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-slate-100 transition-colors duration-300 dark:bg-slate-950">
+    <div className="flex min-h-screen w-full overflow-x-hidden bg-slate-50 dark:bg-slate-950">
 
       <Sidebar
         open={sidebarOpen}

@@ -27,9 +27,7 @@ export default function Dashboard() {
   }, []);
 
   const editExpense = (expense) => {
-    navigate("/add-expense", {
-      state: expense,
-    });
+    navigate("/add-expense", { state: expense });
   };
 
   const deleteExpense = async (id) => {
@@ -73,61 +71,54 @@ export default function Dashboard() {
   });
 
   return (
-    <main className="min-h-screen space-y-8 rounded-3xl bg-slate-50 p-4 dark:bg-slate-900 dark:text-white">
+    <main className="w-full min-w-0 space-y-6 p-4 md:p-6 bg-slate-50 dark:bg-slate-900 dark:text-white">
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 p-8 text-white shadow-2xl">
+      {/* Hero */}
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 p-6 md:p-10 text-white shadow-xl">
 
         <div className="relative z-10 max-w-2xl">
-          <p className="text-sm font-medium text-blue-100">
+          <p className="text-sm text-blue-100 font-medium">
             Welcome back 👋
           </p>
 
-          <h1 className="mt-2 text-4xl font-bold">
+          <h1 className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
             Manage Your Money Smarter
           </h1>
 
-          <p className="mt-4 text-blue-100">
+          <p className="mt-4 text-sm sm:text-base text-blue-100">
             Track spending, monitor trends and stay in control of your finances.
           </p>
 
           <Button
             variant="secondary"
-            className="mt-6 bg-white text-blue-700 hover:bg-slate-100"
+            className="mt-6 w-full sm:w-auto bg-white text-blue-700 hover:bg-slate-100 font-semibold"
             onClick={() => navigate("/add-expense")}
           >
             + Add Expense
           </Button>
         </div>
 
-        <div className="absolute -right-12 -top-12 h-56 w-56 rounded-full bg-white/10 blur-2xl"></div>
-
+        <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-white/10 blur-3xl"></div>
         <div className="absolute bottom-0 left-0 h-24 w-24 rounded-full bg-blue-300/20 blur-3xl"></div>
 
       </section>
 
-      {/* Summary Cards */}
-
-      <section className="grid gap-6 md:grid-cols-2">
+      {/* Summary */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
         {summaryCards.map((card) => (
-
           <Card key={card.label} hover>
 
             <div className="flex items-center justify-between">
 
               <div>
-
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                <p className="text-sm text-slate-500 dark:text-slate-400">
                   {card.label}
                 </p>
 
-                <p
-                  className={`mt-2 text-3xl font-bold ${card.color}`}
-                >
+                <h2 className={`mt-2 text-3xl font-bold ${card.color}`}>
                   {card.value}
-                </p>
-
+                </h2>
               </div>
 
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-500/10 text-3xl">
@@ -137,34 +128,32 @@ export default function Dashboard() {
             </div>
 
           </Card>
-
         ))}
 
       </section>
 
       {/* Transactions */}
-
       <Card className="shadow-xl">
 
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 
-          <h2 className="text-2xl font-bold dark:text-white">
+          <h2 className="text-2xl font-bold">
             Recent Transactions
           </h2>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="flex flex-col md:flex-row gap-3 w-full lg:w-auto">
 
             <Input
               placeholder="Search expenses..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="sm:w-60"
+              className="w-full md:w-64"
             />
 
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
             >
               <option value="all">All Categories</option>
               <option value="Food">Food</option>
@@ -177,12 +166,16 @@ export default function Dashboard() {
 
         </div>
 
-        <TransactionTable
-          transactions={filteredTransactions}
-          onAddClick={() => navigate("/add-expense")}
-          onDelete={deleteExpense}
-          onEdit={editExpense}
-        />
+        <div className="overflow-x-auto">
+
+          <TransactionTable
+            transactions={filteredTransactions}
+            onAddClick={() => navigate("/add-expense")}
+            onDelete={deleteExpense}
+            onEdit={editExpense}
+          />
+
+        </div>
 
       </Card>
 
