@@ -43,57 +43,65 @@ export default function Login() {
     }
   };
 
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-100 p-4">
-      <Card className="w-full max-w-md p-8">
+return (
+  <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 p-4 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
 
-        <h1 className="mb-2 text-center text-3xl font-bold">
+    <Card className="w-full max-w-md rounded-3xl border border-slate-200 p-8 shadow-2xl dark:border-slate-700">
+
+      <div className="mb-8 text-center">
+
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-3xl text-white shadow-lg">
+          💰
+        </div>
+
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
           Welcome Back
         </h1>
 
-        <p className="mb-6 text-center text-slate-500">
-          Login to your Expense Tracker
+        <p className="mt-2 text-slate-500 dark:text-slate-400">
+          Login to continue managing your expenses.
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+      </div>
 
-          <Input
-            label="Email"
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-          />
+      <form onSubmit={handleSubmit} className="space-y-5">
 
-          <Input
-            label="Password"
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Enter your password"
-          />
+        <Input
+          label="Email"
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Enter your email"
+        />
 
-          <Button 
-          className="w-full">
-            Login
-          </Button>
+        <Input
+          label="Password"
+          type="password"
+          name="password"
+          value={form.password}
+          onChange={handleChange}
+          placeholder="Enter your password"
+        />
 
-        </form>
+        <Button className="w-full rounded-xl py-3">
+          Login
+        </Button>
 
-        <p 
-        className="mt-6 text-center text-sm">
-          Don't have an account?{" "}
-          <Link
-            to="/register"
-            className="text-blue-600 hover:underline"
-          >
-            Register
-          </Link>
-        </p>
+      </form>
 
-      </Card>
-    </main>
-  );
+      <p className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
+        Don't have an account?{" "}
+        <Link
+          to="/register"
+          className="font-semibold text-blue-600 hover:underline"
+        >
+          Register
+        </Link>
+      </p>
+
+    </Card>
+
+  </main>
+);
 }

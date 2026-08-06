@@ -6,132 +6,165 @@ import Input from "../components/ui/Input";
 import TransactionTable from "../components/TransactionTable";
 import api from "../services/api";
 
-
 export default function Dashboard() {
   const navigate = useNavigate();
-const [search, setSearch] = useState("");
-const [category, setCategory] = useState("all");
-const [transactions, setTransactions] = useState([]);
 
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("all");
+  const [transactions, setTransactions] = useState([]);
 
-const fetchExpenses = async () => {
-  try {
-    const res = await api.get("/expenses");
-    setTransactions(res.data);
-  } catch (error) {
-   
-  }
-};
+  const fetchExpenses = async () => {
+    try {
+      const res = await api.get("/expenses");
+      setTransactions(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-const editExpense = (expense) => {
-  navigate("/add-expense", {
-    state: expense,
-  });
-};
-
-useEffect(() => {
-  fetchExpenses();
-}, []);
-
-const deleteExpense = async (id) => {
-  try {
-    await api.delete(`/expenses/${id}`);
+  useEffect(() => {
     fetchExpenses();
-  } catch (error) {
-    
-  }
-};
+  }, []);
 
-const totalExpenses = transactions.reduce(
-  (total, item) => total + Number(item.amount),
-  0
-);
+  const editExpense = (expense) => {
+    navigate("/add-expense", {
+      state: expense,
+    });
+  };
 
-const summaryCards = [
-  {
-    label: "Total Expenses",
-    value: `Rs. ${totalExpenses}`,
-    color: "text-red-600",
-    icon: "💸",
-  },
-  {
-    label: "Total Entries",
-    value: transactions.length,
-    color: "text-blue-600",
-    icon: "📊",
-  },
-];
+  const deleteExpense = async (id) => {
+    try {
+      await api.delete(`/expenses/${id}`);
+      fetchExpenses();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-const filteredTransactions = transactions.filter((tx) => {
-  const matchesSearch = tx.title
-    .toLowerCase()
-    .includes(search.toLowerCase());
+  const totalExpenses = transactions.reduce(
+    (total, item) => total + Number(item.amount),
+    0
+  );
 
-  const matchesCategory =
-    category === "all" || tx.category === category;
+  const summaryCards = [
+    {
+      label: "Total Expenses",
+      value: `Rs. ${totalExpenses.toLocaleString()}`,
+      color: "text-red-500",
+      icon: "💸",
+    },
+    {
+      label: "Total Entries",
+      value: transactions.length,
+      color: "text-blue-500",
+      icon: "📊",
+    },
+  ];
 
-  return matchesSearch && matchesCategory;
-});
+  const filteredTransactions = transactions.filter((tx) => {
+    const matchesSearch = tx.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesCategory =
+      category === "all" || tx.category === category;
+
+    return matchesSearch && matchesCategory;
+  });
 
   return (
-    
-    <main className="space-y-8">
+    <main className="min-h-screen space-y-8 rounded-3xl bg-slate-50 p-4 dark:bg-slate-900 dark:text-white">
 
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand-600 to-brand-700 p-6 text-white shadow-lg lg:p-10">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 p-8 text-white shadow-2xl">
+
         <div className="relative z-10 max-w-2xl">
-          <p className="text-sm font-medium text-brand-100">Welcome back 👋</p>
-          <h1 className="mt-2 font-heading text-3xl font-bold lg:text-4xl">
+          <p className="text-sm font-medium text-blue-100">
+            Welcome back 👋
+          </p>
+
+          <h1 className="mt-2 text-4xl font-bold">
             Manage Your Money Smarter
           </h1>
-          <p className="mt-3 text-brand-100">
-            Track spending, monitor trends, and stay in control of your finances.
+
+          <p className="mt-4 text-blue-100">
+            Track spending, monitor trends and stay in control of your finances.
           </p>
+
           <Button
             variant="secondary"
-            className="mt-6 bg-white hover:bg-brand-50"
+            className="mt-6 bg-white text-blue-700 hover:bg-slate-100"
             onClick={() => navigate("/add-expense")}
           >
             + Add Expense
           </Button>
         </div>
-        <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10" />
+
+        <div className="absolute -right-12 -top-12 h-56 w-56 rounded-full bg-white/10 blur-2xl"></div>
+
+        <div className="absolute bottom-0 left-0 h-24 w-24 rounded-full bg-blue-300/20 blur-3xl"></div>
+
       </section>
 
-    
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      {/* Summary Cards */}
+
+      <section className="grid gap-6 md:grid-cols-2">
+
         {summaryCards.map((card) => (
+
           <Card key={card.label} hover>
-            <div className="flex items-start justify-between">
+
+            <div className="flex items-center justify-between">
+
               <div>
-                <p className="text-sm text-slate-500">{card.label}</p>
-                <p className={`mt-2 font-heading text-2xl font-bold ${card.color}`}>
+
+                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                  {card.label}
+                </p>
+
+                <p
+                  className={`mt-2 text-3xl font-bold ${card.color}`}
+                >
                   {card.value}
                 </p>
+
               </div>
-              <span className="text-2xl">{card.icon}</span>
+
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-500/10 text-3xl">
+                {card.icon}
+              </div>
+
             </div>
+
           </Card>
+
         ))}
+
       </section>
 
-     
-      <Card>
+      {/* Transactions */}
+
+      <Card className="shadow-xl">
+
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <h2 className="font-heading text-xl font-semibold text-slate-900">
+
+          <h2 className="text-2xl font-bold dark:text-white">
             Recent Transactions
           </h2>
 
           <div className="flex flex-col gap-3 sm:flex-row">
+
             <Input
               placeholder="Search expenses..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="sm:w-56"
+              className="sm:w-60"
             />
+
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/15"
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white"
             >
               <option value="all">All Categories</option>
               <option value="Food">Food</option>
@@ -139,7 +172,9 @@ const filteredTransactions = transactions.filter((tx) => {
               <option value="Shopping">Shopping</option>
               <option value="Bills">Bills</option>
             </select>
+
           </div>
+
         </div>
 
         <TransactionTable
@@ -148,7 +183,9 @@ const filteredTransactions = transactions.filter((tx) => {
           onDelete={deleteExpense}
           onEdit={editExpense}
         />
+
       </Card>
+
     </main>
   );
 }
