@@ -85,7 +85,6 @@ export default function TransactionTable({
                   >
                     Edit
                   </button>
-
                   <button
                     onClick={() => onDelete(tx._id)}
                     className="rounded bg-red-500 px-3 py-1 text-white transition hover:bg-red-600"
