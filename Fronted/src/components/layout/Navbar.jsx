@@ -1,4 +1,4 @@
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Menu } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 
 export default function Navbar({ onMenuClick }) {
@@ -14,22 +14,26 @@ export default function Navbar({ onMenuClick }) {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white/80 px-4 backdrop-blur-md dark:border-slate-700 dark:bg-slate-900/90 lg:px-8">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6 dark:border-slate-700 dark:bg-slate-900">
+
+      {/* Left */}
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuClick}
-          className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 dark:text-white dark:hover:bg-slate-800 lg:hidden"
+          className="rounded-lg p-2 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden"
         >
-          ☰
+          <Menu size={22} />
         </button>
 
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white lg:hidden">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
           Dashboard
         </h2>
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="hidden text-right sm:block">
+      {/* Right */}
+      <div className="flex items-center gap-2 sm:gap-4">
+
+        <div className="hidden md:block text-right">
           <p className="text-sm font-medium text-slate-900 dark:text-white">
             {userName}
           </p>
@@ -46,13 +50,13 @@ export default function Navbar({ onMenuClick }) {
           {darkMode ? <Sun size={18} /> : <Moon size={18} />}
         </button>
 
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-600 text-sm font-semibold text-white">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
           {userName.charAt(0).toUpperCase()}
         </div>
 
         <button
           onClick={handleLogout}
-          className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600"
+          className="hidden sm:block rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600"
         >
           Logout
         </button>

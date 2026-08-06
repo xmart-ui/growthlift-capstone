@@ -17,30 +17,22 @@ const links = [
 export default function Sidebar({ open, onClose }) {
   return (
     <>
+      {/* Mobile Overlay */}
       {open && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
           onClick={onClose}
         />
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col
-        border-r border-slate-200
-        bg-white
-        dark:border-slate-700
-        dark:bg-slate-900
-        transition-transform duration-300
-        lg:static lg:translate-x-0
-        ${open ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed inset-y-0 left-0 z-50 w-64 flex-col border-r border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900 transform transition-transform duration-300 lg:translate-x-0 ${
+          open ? "translate-x-0 flex" : "-translate-x-full lg:flex"
+        }`}
       >
         {/* Logo */}
         <div className="flex h-16 items-center gap-3 border-b border-slate-200 px-6 dark:border-slate-700">
-          <div
-            className="flex h-11 w-11 items-center justify-center rounded-2xl
-            bg-gradient-to-r from-blue-600 to-indigo-600
-            text-white shadow-lg"
-          >
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg">
             <Wallet size={22} />
           </div>
 
@@ -63,12 +55,10 @@ export default function Sidebar({ open, onClose }) {
               to={to}
               onClick={onClose}
               className={({ isActive }) =>
-                `group flex items-center gap-3 rounded-xl px-4 py-3
-                text-sm font-medium transition-all duration-300
-                ${
+                `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${
                   isActive
-                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
-                    : "text-slate-600 hover:bg-slate-100 hover:dark:bg-slate-800 dark:text-slate-300"
+                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
+                    : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
                 }`
               }
             >
